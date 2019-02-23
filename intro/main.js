@@ -3,7 +3,8 @@ var app = new Vue({
     data: {
         product: "Socks",
         // description: "A pair of warm, fuzzy socks"
-        image: './assets/vmSocks-green.jpg',
-        link:'https://vue.js.org'
+        image: 'https://www.vuemastery.com/images/challenges/vmSocks-green-onWhite.jpg',
+        link:'https://vue.js.org', 
+        inStock: true
     }
 })

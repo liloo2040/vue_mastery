@@ -11,12 +11,14 @@
         <div id="app">
             <div class="product">
                 <div class="product-image">
-                    <img v-bind:src="image" alt="" />
+                    <img :src="image"  />
                 </div>
                 <div class="product-info">
                     <h1>{{ product }}</h1>
+                    <p v-if="true">In Stock</p>
+                    <p v-else>Out of Stock</p>
                 </div>
-                <a v-bind:href="link">More products</a>
+                <!--<a v-bind:href="link">More products</a>-->
             </div>
             <!--<p>{{ description }}</p>-->
         </div>
