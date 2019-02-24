@@ -1,7 +1,38 @@
-var app = new Vue({
-    el: '#app',
-    data: {
-        product: 'Socks',
+Vue.component('product', {
+    props: {
+        premium: {
+            type: Boolean,
+            required: true
+        }
+    },
+    template: `
+    <div class="product">
+        <div class="product-image">
+            <img :src="image"  />
+        </div>
+        <div class="product-info">
+            <h1>{{ title }}</h1>
+            <p v-if="inStock">In Stock</p>
+            <p v-else>Out of Stock</p>
+            <!--<p>{{ sale }}</p>-->
+            <p>Shipping: {{ shipping }}</p>
+                <product-details :details="details"></product-details>
+
+                <div v-for="(variant, index) in variants" :key="variant.variantId"
+                    class="color-box"
+                    :style="{ backgroundColor: variant.variantColor}" @mouseover="updateProduct(index)">
+                </div>
+                <button v-on:click="addToCart" :disabled="!inStock"
+                    :class="{ disabledButton: !inStock }">Add to Cart</button> 
+                <div class="cart">
+                    <p>Cart({{cart}})</p>
+                </div>
+            </div>
+        </div>
+    `, 
+    data(){
+        return {
+            product: 'Socks',
         brand: 'Vue Mastery',
         // description: "A pair of warm, fuzzy socks"
         selectedVariant: 0,
@@ -24,6 +55,7 @@ var app = new Vue({
         ], 
     cart: 0, 
     onSale: true
+        }
     }, 
     methods: {
             addToCart() {
@@ -47,12 +79,41 @@ var app = new Vue({
         inStock(){
             return this.variants[this.selectedVariant].variantQuantity
         },
-        sale(){
+        /*sale(){
             if(this.onSale){
                 return this.brand + ' ' + this.product + ' are on sale!'
             }
                 return this.brand + ' ' + this.product + ' are not on sale!'
+        }*/
+        shipping(){
+            if(this.premium){
+                return "Free"
             }
+            return 2.99
+        }
+    }
+
+})
+
+Vue.component('product-details', {
+    props: 
+    {
+        details:{
+            type: Array,
+            required: true
+        }
+    },
+    template: `
+                <ul>
+                    <li v-for="detail in details" >{{ detail }}</li>
+                </ul>
+    `
+})
+
+var app = new Vue({
+    el: '#app',
+    data:{
+        premium: false
     }
         //, 
         // sizes: ["M","XS", "L", "XL", "S"]
