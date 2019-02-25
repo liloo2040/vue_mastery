@@ -16,17 +16,17 @@ Vue.component('product', {
             <p v-else>Out of Stock</p>
             <!--<p>{{ sale }}</p>-->
             <p>Shipping: {{ shipping }}</p>
-                <product-details :details="details"></product-details>
+            <ul>
+                <li v-for="detail in details" >{{ detail }}</li>
+            </ul>
 
                 <div v-for="(variant, index) in variants" :key="variant.variantId"
                     class="color-box"
                     :style="{ backgroundColor: variant.variantColor}" @mouseover="updateProduct(index)">
                 </div>
                 <button v-on:click="addToCart" :disabled="!inStock"
-                    :class="{ disabledButton: !inStock }">Add to Cart</button> 
-                <div class="cart">
-                    <p>Cart({{cart}})</p>
-                </div>
+                    :class="{ disabledButton: !inStock }">Add to Cart</button>
+                <button @click="removeFromCart">Remove from Cart</button>
             </div>
         </div>
     `, 
@@ -53,13 +53,12 @@ Vue.component('product', {
             variantQuantity: 0
         }
         ], 
-    cart: 0, 
     onSale: true
         }
     }, 
     methods: {
             addToCart() {
-                this.cart += 1
+                this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
             },
             deleteFromCart(){
                 this.cart -= 1
@@ -67,6 +66,9 @@ Vue.component('product', {
             updateProduct(index) {
                 this.selectedVariant = index
                 console.log(index)
+            }, 
+            removeFromCart(){
+                this.$emit('remove-from-cart', this.variants[this.selectedVariant.variantId])
             }
     },
     computed:{
@@ -95,25 +97,20 @@ Vue.component('product', {
 
 })
 
-Vue.component('product-details', {
-    props: 
-    {
-        details:{
-            type: Array,
-            required: true
-        }
-    },
-    template: `
-                <ul>
-                    <li v-for="detail in details" >{{ detail }}</li>
-                </ul>
-    `
-})
 
 var app = new Vue({
     el: '#app',
     data:{
-        premium: false
+        premium: false,
+        cart: []
+    }, 
+    methods:{
+        updateCart(id){
+        this.cart.push(id)
+        },
+        updatedCart(id){
+            this.cart.splice(id);
+        }
     }
         //, 
         // sizes: ["M","XS", "L", "XL", "S"]
