@@ -12,9 +12,9 @@
                 <div class="cart">
                         <p>Cart({{ cart.length }})</p>
                 </div>
-            <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="updatedCart"></product>
+            <product :premium="premium" @add-to-cart="updateCart"></product>
             
-                    <!--<div v-for="size in sizes">
+                    <!--@remove-from-cart="removedArticle"<div v-for="size in sizes">
                         <p>{{ size }}</p>
                     </div>-->
                     <!--<span v-if="true">On Sale!</span>-->
